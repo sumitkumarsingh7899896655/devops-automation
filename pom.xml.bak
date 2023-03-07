@@ -6,6 +6,6 @@
 		<groupId>devops-automation</groupId>
 		<artifactId>devops-automation</artifactId>
 		<version>1.0.1</version>
-		<relativePath/> 
+		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 </project>
