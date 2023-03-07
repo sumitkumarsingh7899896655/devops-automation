@@ -30,7 +30,7 @@ pipeline{
     }
     stage('Push to Docker hub') {
       steps {
-        bat 'docker push arpitasen/jenkins-docker'
+        bat 'docker push sumitkumarsingh7899896655/jenkinsproject'
       }
     }
 	}
