@@ -1,38 +1,20 @@
 pipeline{
     agent any
-    tools {
-        maven 'MAVEN'
-    }
-	environment {
-    DOCKERHUB_CREDENTIALS = credentials('dockerhub')
-  }
-    stages {
-        stage('Build Maven') {
+    stages{
+        stage('code checkout'){
             steps{
-                checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/sumitkumarsingh7899896655/devops-automation.git']])
-
-                bat "mvn -Dmaven.test.failure.ignore=true clean package"
-                
+                checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[credentialsId: 'github', url: 'https://github.com/gangarampadolkar93/jenkins_image.git']])
             }
         }
-        stage('Build Docker Image') {
-            steps {
-                script {
-                  bat 'docker build -t sumitkumarsingh7899896655/devops-automation .'
-                }
-            }
-        }
-    stage('Login to Docker ') {
+        stage('Docker Build and push') {
       steps {
-        //bat 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
-		bat 'echo Successfully logged in Docker'
+        script {
+              docker.withRegistry( 'https://registry.hub.docker.com', 'dockerhub' ) {
+              def customImage = docker.build("gangarampadolkar/jenkins_image")
+              customImage.push()
+          }
       }
     }
-    stage('Push to Docker hub') {
-      steps {
-        //bat 'docker push sumitkumarsingh7899896655/jenkinsproject'
-		bat 'echo Successfully Pushed Image in Docker Hub '
-      }
+}
     }
-	}
 }
