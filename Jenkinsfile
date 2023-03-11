@@ -16,12 +16,5 @@ pipeline{
       }
     }
 }
-        stage('Docker Scan') {
-      steps {
-        script {
-              docker scan 
-          }
-      }
-    }
     }
 }
